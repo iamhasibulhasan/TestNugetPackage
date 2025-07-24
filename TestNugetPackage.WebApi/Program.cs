@@ -1,5 +1,4 @@
-﻿using PatronusR.DependencyInjection;
-using TestNugetPackage.Application.Feature;
+﻿using TestNugetPackage.Application;
 using TestNugetPackage.Application.Interface;
 using TestNugetPackage.Infrastructure.Service;
 
@@ -10,11 +9,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+
+builder.Services
+    .AddApplication();
 // Register dependencies FIRST
 builder.Services.AddScoped<IUserService, UserService>();
-
-// Then register PatronusR with handler assembly
-builder.Services.AddPatronusR(typeof(GetUserHandler).Assembly);
 
 var app = builder.Build();
 

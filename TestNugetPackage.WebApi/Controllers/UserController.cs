@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PatronusR.Contracts;
-using System.Reflection;
+using PatronusR.Interfaces;
 using TestNugetPackage.Application.Feature;
 using TestNugetPackage.Application.Interface;
 
@@ -20,25 +19,11 @@ namespace TestNugetPackage.WebApi.Controllers
         }
 
         [HttpGet("test")]
-        public async Task<IActionResult> TestMediator()
+        public async Task<IActionResult> TestPatronusR(CancellationToken cancellationToken = default)
         {
-            var result = await _patronusR.Send(new GetUserQuery());
-            return Ok(result);
-        }
-
-        [HttpGet("debug-handler")]
-        public IActionResult DebugHandler()
-        {
-            var handler = HttpContext.RequestServices
-                .GetService<IRequestHandler<GetUserQuery, User>>();
-
-            return Ok(new
-            {
-                HandlerRegistered = handler != null,
-                HandlerType = handler?.GetType().FullName,
-                UserServiceRegistered = handler != null &&
-                    handler.GetType().GetField("_userService", BindingFlags.NonPublic | BindingFlags.Instance) != null
-            });
+            var query = new GetAllUsersQuery();
+            var users = await _patronusR.Send(query, cancellationToken); // Changed 'user' to 'users'
+            return Ok(users);
         }
     }
 }

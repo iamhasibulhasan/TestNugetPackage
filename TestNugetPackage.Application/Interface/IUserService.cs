@@ -4,6 +4,6 @@ namespace TestNugetPackage.Application.Interface
 {
     public interface IUserService
     {
-        Task<User> GetAllUser();
+        Task<List<User>> GetAllUser();
     }
 }
