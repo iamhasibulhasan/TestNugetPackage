@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PatronusR.Extensions;
-using System.Reflection;
 
 namespace TestNugetPackage.Application
 {
@@ -8,7 +7,13 @@ namespace TestNugetPackage.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddPatronusR(Assembly.GetExecutingAssembly());
+            var assembly = typeof(DependencyInjection).Assembly;
+
+            services.AddPatronusR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(assembly);
+            });
+
             return services;
         }
     }
